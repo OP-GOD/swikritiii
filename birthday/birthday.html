@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Swikriti ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #ffd1dc, #ffffff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .card {
+        background: white;
+        width: 92%;
+        max-width: 520px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 24px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    h1 { color: #ff4f87; font-size: 24px; }
+
+    .text {
+        margin-top: 12px;
+        color: #555;
+        min-height: 60px;
+        font-size: 16px;
+    }
+
+    input {
+        margin-top: 12px;
+        width: 85%;
+        padding: 12px;
+        border-radius: 14px;
+        border: 2px solid #ffd1dc;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    button {
+        border: none;
+        padding: 12px 18px;
+        border-radius: 14px;
+        background: #ff4f87;
+        color: white;
+        margin-top: 14px;
+        font-size: 15px;
+        width: 80%;
+    }
+
+    .page { display: none; animation: fade 0.3s ease; }
+    .active { display: block; }
+
+    @keyframes fade {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* NOTIFICATION */
+    .notification {
+        position: fixed;
+        top: 20px;
+        background: #ff4f87;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 14px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        animation: slideDown 0.4s ease;
+        z-index: 5;
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* HEARTS */
+    .heart {
+        position: fixed;
+        bottom: -20px;
+        font-size: 18px;
+        color: rgba(255, 79, 135, 0.35);
+        animation: floatUp linear forwards;
+        pointer-events: none;
+    }
+
+    @keyframes floatUp {
+        to { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    /* GALLERY */
+    .gallery img {
+        width: 100%;
+        border-radius: 16px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" src="music.mp3"></audio>
+
+<div class="card" id="app">
+
+    <div id="lock" class="page active">
+        <h1>Private Access 🔒</h1>
+        <div class="text">Only Swikriti may enter 😌</div>
+        <input id="password" placeholder="Enter your name">
+        <button onclick="unlock()">Unlock ❤️</button>
+        <div id="error" style="color:#ff2f6d;"></div>
+    </div>
+
+    <div id="chat" class="page">
+        <h1>Message 💬</h1>
+        <div class="text" id="chatText"></div>
+        <button onclick="next()">Continue</button>
+    </div>
+
+    <div id="gallery" class="page">
+        <h1>Memories ✨</h1>
+        <div class="gallery">
+            <img id="photo" src="photo1.jpg">
+        </div>
+        <button onclick="nextPhoto()">Next Photo</button>
+        <button onclick="next()">Continue</button>
+    </div>
+
+    <div id="cat" class="page">
+        <h1>Secret Cat 😺</h1>
+        <div style="font-size:70px;" onclick="easterEgg()">😸</div>
+        <div class="text" id="catText">Tap the cat 😌</div>
+        <button onclick="next()">Continue</button>
+    </div>
+
+    <div id="end" class="page">
+        <h1>For You ❤️</h1>
+        <div class="text">
+            Happy Birthday Swikriti 💖<br><br>
+            You make my world brighter, happier,
+            and infinitely more beautiful 😌✨
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const pages = ["lock","chat","gallery","cat","end"];
+    let current = 0;
+
+    function show(index) {
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+        document.getElementById(pages[index]).classList.add("active");
+        current = index;
+
+        if (pages[index] === "chat") nextMessage();
+    }
+
+    function unlock() {
+        const value = document.getElementById("password").value.trim().toLowerCase();
+        if (value === "swikriti") {
+            playMusic();
+            fakeNotification();
+            show(1);
+        } else {
+            document.getElementById("error").innerText = "Access denied 😌";
+        }
+    }
+
+    function playMusic() {
+        document.getElementById("bgMusic").play().catch(()=>{});
+    }
+
+    /* NOTIFICATION */
+    function fakeNotification() {
+        const n = document.createElement("div");
+        n.className = "notification";
+        n.innerText = "💖 New message from Someone Special";
+        document.body.appendChild(n);
+        setTimeout(() => n.remove(), 2500);
+    }
+
+    /* CHAT */
+    const messages = [
+        "Swikriti… 😌",
+        "Today is a very special day ✨",
+        "Because the cutest human was born 💖"
+    ];
+    let msgIndex = 0;
+
+    function nextMessage() {
+        document.getElementById("chatText").innerText =
+            messages[msgIndex++ % messages.length];
+    }
+
+    function next() {
+        if (current < pages.length - 1) show(current + 1);
+    }
+
+    /* GALLERY */
+    const photos = ["photo1.jpg","photo2.jpg","photo3.jpg"];
+    let photoIndex = 0;
+
+    function nextPhoto() {
+        photoIndex = (photoIndex + 1) % photos.length;
+        document.getElementById("photo").src = photos[photoIndex];
+    }
+
+    /* EASTER EGG */
+    function easterEgg() {
+        const surprises = [
+            "Cat says you’re adorable 😌",
+            "Bonus love unlocked 💖",
+            "Secret cuddle voucher ✨"
+        ];
+        document.getElementById("catText").innerText =
+            surprises[Math.floor(Math.random()*surprises.length)];
+    }
+
+    /* HEARTS */
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }, 400);
+</script>
+
+</body>
+</html>
